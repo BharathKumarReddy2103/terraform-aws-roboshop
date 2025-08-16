@@ -18,6 +18,6 @@ variable "component" {
 
 }
 
-variable "rule_priority" {
+# variable "rule_priority" {
     
-}
+# }
