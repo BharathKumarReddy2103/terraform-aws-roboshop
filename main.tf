@@ -20,7 +20,8 @@ resource "aws_instance" "main" {
   instance_type = "t3.micro"
   vpc_security_group_ids = [local.sg_id]
   subnet_id = local.private_subnet_id
-  #iam_instance_profile = "EC2RoleToFetchSSMParams"
+  iam_instance_profile = "EC2RoleToFetchSSMParams"
+  
   tags = merge(
     local.common_tags,
     {
