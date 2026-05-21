@@ -72,18 +72,19 @@ resource "aws_ami_from_instance" "main" {
   )
 }
 
-resource "terraform_data" "main_delete" {
-  triggers_replace = [
-    aws_instance.main.id
-  ]
+# resource "terraform_data" "main_delete" {
+#   triggers_replace = [
+#     aws_instance.main.id
+#   ]
   
-  # make sure you have aws configure in your laptop
-  provisioner "local-exec" {
-    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.main.id}"
-  }
+#   # make sure you have aws configure in your laptop
+#   provisioner "local-exec" {
+#     command = "aws ec2 terminate-instances --instance-ids ${aws_instance.main.id}"
+#   }
 
-  depends_on = [aws_ami_from_instance.main]
-}
+#   depends_on = [aws_ami_from_instance.main]
+# }
+
 
 resource "aws_launch_template" "main" {
   name = "${var.project}-${var.environment}-${var.component}"
@@ -138,7 +139,8 @@ resource "aws_autoscaling_group" "main" {
 
   launch_template {
     id      = aws_launch_template.main.id
-    version = aws_launch_template.main.latest_version
+    # version = aws_launch_template.main.latest_version
+    version = "$Latest"
   }
 
   dynamic "tag" {
@@ -161,7 +163,7 @@ resource "aws_autoscaling_group" "main" {
     preferences {
       min_healthy_percentage = 50
     }
-    triggers = ["launch_template"]
+    # triggers = ["launch_template"]
   }
 
   timeouts{
